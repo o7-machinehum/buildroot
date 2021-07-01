@@ -1,0 +1,11 @@
+--- drivers/mmc/host/sunxi-mmc.c.old	2021-07-01 16:41:01.691144218 -0700
++++ drivers/mmc/host/sunxi-mmc.c	2021-07-01 16:39:13.961142567 -0700
+@@ -1387,6 +1387,8 @@
+ 		host->use_new_timings = true;
+ 	}
+ 
++    mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
++
+ 	mmc->ops		= &sunxi_mmc_ops;
+ 	mmc->max_blk_count	= 8192;
+ 	mmc->max_blk_size	= 4096;
