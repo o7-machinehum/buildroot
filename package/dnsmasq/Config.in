@@ -48,4 +48,10 @@ config BR2_PACKAGE_DNSMASQ_CONNTRACK
 	help
 	  Enable DNS query connection marking in netfilter.
 
+config BR2_PACKAGE_DNSMASQ_NFTSET
+	bool "nftset support"
+	select BR2_PACKAGE_NFTABLES
+	help
+	  Enable nftset support.
+
 endif
