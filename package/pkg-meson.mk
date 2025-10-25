@@ -139,6 +139,8 @@ define inner-meson-package
 ifndef $(2)_CONFIGURE_CMDS
 ifeq ($(4),target)
 
+$(2)_MESON ?= $$(MESON)
+
 $(2)_CFLAGS ?= $$(TARGET_CFLAGS)
 $(2)_LDFLAGS ?= $$(TARGET_LDFLAGS)
 $(2)_CXXFLAGS ?= $$(TARGET_CXXFLAGS)
@@ -157,7 +159,7 @@ define $(2)_CONFIGURE_CMDS
 	CC_FOR_BUILD="$$(HOSTCC)" \
 	CXX_FOR_BUILD="$$(HOSTCXX)" \
 	$$($$(PKG)_CONF_ENV) \
-	$$(MESON) setup \
+	$$($$(PKG)_MESON) setup \
 		--prefix=/usr \
 		--libdir=lib \
 		--default-library=$(PKG_MESON_DEFAULT_LIBRARY) \

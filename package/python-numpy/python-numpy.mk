@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_NUMPY_VERSION = 1.25.0
+PYTHON_NUMPY_VERSION = 2.2.6
 PYTHON_NUMPY_SOURCE = numpy-$(PYTHON_NUMPY_VERSION).tar.gz
 PYTHON_NUMPY_SITE = https://github.com/numpy/numpy/releases/download/v$(PYTHON_NUMPY_VERSION)
 PYTHON_NUMPY_LICENSE = BSD-3-Clause, MIT, Zlib
@@ -18,11 +18,20 @@ PYTHON_NUMPY_CPE_ID_VENDOR = numpy
 PYTHON_NUMPY_CPE_ID_PRODUCT = numpy
 
 PYTHON_NUMPY_DEPENDENCIES = host-python-cython python3
+
 HOST_PYTHON_NUMPY_DEPENDENCIES = host-python-cython
 
 PYTHON_NUMPY_CONF_ENV += \
 	_PYTHON_SYSCONFIGDATA_NAME=$(PKG_PYTHON_SYSCONFIGDATA_NAME) \
 	PYTHONPATH=$(PYTHON3_PATH)
+
+PYTHON_NUMPY_MESON_EXTRA_PROPERTIES += \
+	sizeof_long_double=8 \
+	longdouble_format='IEEE_DOUBLE_LE'
+
+# Numpy requires a custom version of meson
+PYTHON_NUMPY_MESON = \
+    PYTHONNOUSERSITE=y $(HOST_DIR)/bin/python3 -B $(@D)/vendored-meson/meson/meson.py
 
 ifeq ($(BR2_PACKAGE_LAPACK),y)
 PYTHON_NUMPY_DEPENDENCIES += lapack
@@ -52,6 +61,7 @@ define PYTHON_NUMPY_FIXUP_NPY_PKG_CONFIG_FILES
 	$(SED) '/^pkgdir=/d;/^prefix=/i pkgdir=$(PYTHON3_PATH)/site-packages/numpy/core' \
 		$(PYTHON3_PATH)/site-packages/numpy/core/lib/npy-pkg-config/npymath.ini
 endef
+
 PYTHON_NUMPY_POST_INSTALL_STAGING_HOOKS += PYTHON_NUMPY_FIXUP_NPY_PKG_CONFIG_FILES
 
 # Some package may include few headers from NumPy, so let's install it
