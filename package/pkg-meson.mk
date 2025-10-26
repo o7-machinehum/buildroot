@@ -137,9 +137,8 @@ define inner-meson-package
 # packages.
 #
 ifndef $(2)_CONFIGURE_CMDS
-ifeq ($(4),target)
-
 $(2)_MESON ?= $$(MESON)
+ifeq ($(4),target)
 
 $(2)_CFLAGS ?= $$(TARGET_CFLAGS)
 $(2)_LDFLAGS ?= $$(TARGET_LDFLAGS)
@@ -180,7 +179,7 @@ define $(2)_CONFIGURE_CMDS
 	rm -rf $$($$(PKG)_SRCDIR)/buildroot-build
 	mkdir -p $$($$(PKG)_SRCDIR)/buildroot-build
 	$$(HOST_CONFIGURE_OPTS) \
-	$$($$(PKG)_CONF_ENV) $$(MESON) setup \
+	$$($$(PKG)_CONF_ENV) $$($$(PKG)_MESON) setup \
 		--prefix=$$(HOST_DIR) \
 		--libdir=lib \
 		--sysconfdir=$$(HOST_DIR)/etc \

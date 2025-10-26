@@ -33,6 +33,9 @@ PYTHON_NUMPY_MESON_EXTRA_PROPERTIES += \
 PYTHON_NUMPY_MESON = \
     PYTHONNOUSERSITE=y $(HOST_DIR)/bin/python3 -B $(@D)/vendored-meson/meson/meson.py
 
+HOST_PYTHON_NUMPY_MESON = \
+    PYTHONNOUSERSITE=y $(HOST_DIR)/bin/python3 -B $(@D)/vendored-meson/meson/meson.py
+
 ifeq ($(BR2_PACKAGE_LAPACK),y)
 PYTHON_NUMPY_DEPENDENCIES += lapack
 PYTHON_NUMPY_CONF_OPTS += -Dlapack=lapack
@@ -58,8 +61,8 @@ HOST_PYTHON_NUMPY_CONF_OPTS = -Dblas="" -Dlapack=""
 # So, the numpy distutils extension packages would explicitly link this
 # config path for their package environment.
 define PYTHON_NUMPY_FIXUP_NPY_PKG_CONFIG_FILES
-	$(SED) '/^pkgdir=/d;/^prefix=/i pkgdir=$(PYTHON3_PATH)/site-packages/numpy/core' \
-		$(PYTHON3_PATH)/site-packages/numpy/core/lib/npy-pkg-config/npymath.ini
+	$(SED) '/^pkgdir=/d;/^prefix=/i pkgdir=$(PYTHON3_PATH)/site-packages/numpy/_core' \
+		$(PYTHON3_PATH)/site-packages/numpy/_core/lib/npy-pkg-config/npymath.ini
 endef
 
 PYTHON_NUMPY_POST_INSTALL_STAGING_HOOKS += PYTHON_NUMPY_FIXUP_NPY_PKG_CONFIG_FILES
